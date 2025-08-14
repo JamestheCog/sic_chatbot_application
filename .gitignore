@@ -1,2 +1,3 @@
 .env
 unused
+__pycache__
