@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> {% block title %} 🏥 SIC Chatbot {% endblock %} </title>
+        {% block header %}
+        <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/main.css') }}">
+        {% endblock %}   
+    </head>
+
+    <body>
+        {% block contents %} {% endblock %}
+    </body>
+    <script src = "{{ url_for('static', filename = 'scripts/main.js') }}"> </script>
+    <script src = "{{ url_for('static', filename = 'scripts/utilities.js') }}"> </script>
+</html>

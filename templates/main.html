@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<div class="chatbot-container">
+    <div class="chatbot-header">
+        <h2>Chat Assistant</h2>
+        <div class="chatbot-controls">
+            <button class="mode-toggle">🌓</button>
+            <button class="reset-chat">↻</button>
+        </div>
+    </div>
+    
+    <div class="chat-messages">
+        <!-- Messages will be inserted here by JavaScript -->
+    </div>
+    
+    <div class="chat-input-area">
+        <textarea class="chat-input" placeholder="Type your message..."></textarea>
+        <button class="send-button">Send</button>
+    </div>
+</div>
+{% endblock %}
