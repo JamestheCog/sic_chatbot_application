@@ -15,6 +15,7 @@ def respond(user_message_history, base_prompt):
     response = requests.post(API_URL, headers = HEADER, json = payload)
     message = response.json()
     if 'error' in message:
+        print(message)
         message = {'content' : 'An error happened with the bot on the backend!'}
     else:
         message = message['choices'][0]['message']
