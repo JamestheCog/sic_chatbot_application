@@ -73,3 +73,21 @@ function reset_chat() {
     }
 }
 reset_button.addEventListener('click', reset_chat);
+
+// Add in local storage for light / dark mode:
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle_mode = document.querySelector('.mode-toggle');
+    const update_theme = (theme) => {
+        toggle_mode.textContent = theme === 'dark' ? '☀️' : '🌙';
+    };
+    const saved_theme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', saved_theme);
+    update_theme(saved_theme);
+    toggle_mode.addEventListener('click', function() {
+        const current_theme = document.body.getAttribute('data-theme');
+        const new_theme = current_theme === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', new_theme);
+        localStorage.setItem('theme', new_theme);
+        update_theme(new_theme);
+    })
+})
