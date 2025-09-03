@@ -14,16 +14,6 @@ from cryptography.fernet import Fernet
 dotenv.load_dotenv()
 conversation = Blueprint('conversation', __name__, template_folder = 'templates')
 
-'''
-database.store_message(data['content'], 'user', current_app.conversation_logger.id)
-current_app.conversation_logger.log_message(data['content'], 'user')
-response = chat.respond_with_gemini(data['content'], current_app.bot_prompt)
-# response = chat.respond(current_app.conversation_logger.message_history, current_app.bot_prompt)
-current_app.conversation_logger.log_message(response, 'assistant')
-database.store_message(response, 'assistant', current_app.conversation_logger.id)
-return(jsonify({'content' : response}), 200)
-'''
-
 # Define the routes here...
 @conversation.route('/send_message', methods = ['POST'])
 def send_message():
