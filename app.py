@@ -1,7 +1,7 @@
 import dotenv, os
 from flask import Flask, render_template
 from utils import logger
-from routes.conversation import conversation, misc
+from routes import conversation, misc
 from google import genai
 from google.genai import types
 from utils import chat
@@ -19,8 +19,8 @@ app.conversation_logger = logger.Logger()
 app.chat_client = chat_client
 
 # Register the routes here plus define a starter route:
-app.register_blueprint(conversation)
-app.register_blueprint(misc)
+app.register_blueprint(conversation.conversation)
+app.register_blueprint(misc.misc)
 @app.route('/')
 def main():
     return(render_template('main.html'))
