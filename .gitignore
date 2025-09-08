@@ -1,3 +1,4 @@
 .env
 unused
 __pycache__
+conversations
