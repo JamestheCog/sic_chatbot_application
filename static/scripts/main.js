@@ -46,7 +46,10 @@ function send_message(hardcoded_content = null) {
     }
     
 }
-send_button.addEventListener('click', send_message);
+send_button.addEventListener('click', () => {
+    e.preventDefault();
+    send_message();
+});
 
 // Also allow the user to send the message with the "Enter" key:
 chat_input.addEventListener('keydown', function(e) {
@@ -74,6 +77,11 @@ function reset_chat() {
 }
 reset_button.addEventListener('click', reset_chat);
 
+function send_welcome_message() {
+    const welcome_message = 'Welcome!  Type a message below to start interacting with the Chatbot...';
+    add_message(welcome_message, 'assistant'); 
+}
+
 // Add in local storage for light / dark mode:
 document.addEventListener('DOMContentLoaded', function() {
     const toggle_mode = document.querySelector('.mode-toggle');
@@ -90,9 +98,5 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', new_theme);
         update_theme(new_theme);
     })
+    send_welcome_message()
 })
-
-// Send a message...
-setTimeout(() => {
-        add_message('Welcome!  Type a message below to start interacting with the Chatbot...', 'assistant');
-}, 100);

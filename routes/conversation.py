@@ -21,6 +21,7 @@ def send_message():
     Generate a response plus log the user's message.
     '''
     data = request.json 
+    print(data)
     if not isinstance(data, dict):
         return(jsonify({'error_message' : 'Invalid data sent', 'error_code' : 500,
                         'user_message' : 'ERROR: SOMETHING HAPPENED'}), 500)
