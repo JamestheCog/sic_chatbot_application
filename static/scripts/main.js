@@ -46,7 +46,7 @@ function send_message(hardcoded_content = null) {
     }
     
 }
-send_button.addEventListener('click', () => {
+send_button.addEventListener('click', (e) => {
     e.preventDefault();
     send_message();
 });
