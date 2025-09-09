@@ -14,8 +14,8 @@ function add_message(text, sender) {
 }
 
 // Function for sending messages:
-function send_message() {
-    let message = chat_input.value.trim();
+function send_message(hardcoded_content) {
+    let message = hardcoded_content === null ? chat_input.value.trim() : hardcoded_content;
     if (message) {
         add_message(message, 'user')
         chat_input.value = '';
@@ -90,4 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', new_theme);
         update_theme(new_theme);
     })
+    setTimeout(() => {
+        add_message('Welcome!  Type a message below to start interacting with the Chatbot...', 'assistant');
+    }, 100);
 })
