@@ -4,11 +4,13 @@
         <title> {% block title %} 🏥 SIC Chatbot {% endblock %} </title>
         {% block header %}
         <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/main.css') }}">
+        <link rel = "stylesheet" href = "{{ url_for('static', filename = 'css/mobile_additions.css') }}">
         {% endblock %}   
     </head>
 
     <body>
         {% block contents %} {% endblock %}
     </body>
+    <script src = "{{ url_for('static', filename = 'scripts/mobile.js') }}"> </script>
     <script src = "{{ url_for('static', filename = 'scripts/main.js') }}"> </script>
 </html>

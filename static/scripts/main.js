@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     const saved_theme = localStorage.getItem('theme') || 'light';
     document.body.setAttribute('data-theme', saved_theme);
-    update_theme(saved_theme);
+    update_theme(saved_theme); setupMobileViewport();;
     toggle_mode.addEventListener('click', function() {
         const current_theme = document.body.getAttribute('data-theme');
         const new_theme = current_theme === 'dark' ? 'light' : 'dark';
@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 })
 
+// Send a message...
 setTimeout(() => {
         add_message('Welcome!  Type a message below to start interacting with the Chatbot...', 'assistant');
 }, 100);
