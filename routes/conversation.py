@@ -9,7 +9,6 @@ from flask import Blueprint, current_app, request, jsonify
 # Initialize Google Gemini here:
 from google import genai
 from google.genai import types
-from cryptography.fernet import Fernet
 
 dotenv.load_dotenv()
 conversation = Blueprint('conversation', __name__, template_folder = 'templates')
