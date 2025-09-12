@@ -83,6 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', new_theme);
         update_theme(new_theme);
     })
-    auto_reset_conversation();
-    setTimeout(() => {send_welcome_message()}, Math.random() * 1e3);
+    auto_reset_conversation();  
+    setTimeout(() => {send_welcome_message()}, Math.random() * 2e3);
 })
