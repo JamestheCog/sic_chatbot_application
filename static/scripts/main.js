@@ -60,21 +60,6 @@ chat_input.addEventListener('keydown', function(e) {
 })
 
 // Reset the chat here...
-function reset_chat() {
-    if (confirm('Are you sure you want to reset the conversation?')) {
-        fetch('/reset_conversation', {
-            method : 'POST', 
-            headers : {'Content-Type' : 'application/json'}
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data['status'] === 200) {
-                chat_messages.innerHTML = '';
-            }
-        })
-        .catch(error => console.error(`Error: ${error}`))
-    }
-}
 reset_button.addEventListener('click', reset_chat);
 
 function send_welcome_message() {
@@ -98,6 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', new_theme);
         update_theme(new_theme);
     })
-    reset_chat()
-    send_welcome_message()
+    auto_reset_conversation();
+    setTimeout(() => {send_welcome_message()}, Math.random() * 1e3);
 })
