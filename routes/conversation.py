@@ -45,4 +45,3 @@ def reset_conversation():
         return(jsonify({'status' : 200}), 200)
     except Exception as e:
         print(f'An error happened: "{e}"')
-        return(jsonify({'status' : str(e)}), 500)

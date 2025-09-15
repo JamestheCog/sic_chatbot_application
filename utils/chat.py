@@ -37,10 +37,15 @@ def respond_with_gemini(message, base_prompt):
     NOTE (Thursday, 28th August) --> this function is not being used in the time being!
     '''
     dotenv.load_dotenv()
-    chat_client = genai.Client(api_key = os.getenv('GEMINI_TOKEN'))
-    chat = chat_client.chats.create(model = 'gemini-2.5-flash', 
-                                    config = types.GenerateContentConfig(system_instruction = base_prompt))
-    response = chat.send_message(message)
+    chat_client, num_attempts = genai.Client(api_key = os.getenv('GEMINI_TOKEN')), 1
+    while num_attempts <= os.getenv('TIMEOUT_RESPONSES'):
+        chat = chat_client.chats.create(model = 'gemini-2.5-flash', 
+                                        config = types.GenerateContentConfig(system_instruction = base_prompt))
+        response = chat.send_message(message)
+        if 'error' in response:
+            print('Trying again to generate response...') ; num_attempts += 1
+        else:
+            break
     return(response.text)
 
 def load_base_prompt(fernet_key):
