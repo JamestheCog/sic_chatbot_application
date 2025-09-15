@@ -35,10 +35,14 @@ def reset_conversation():
     Reset the conversation and by extension, the logger as part of the 
     current_app object's attributes.
     '''
-    chat_client = genai.Client(api_key = os.getenv('GEMINI_TOKEN'))
-    chat_client = chat_client.chats.create(model = 'gemini-2.5-flash',
-                                           config = types.GenerateContentConfig(
-                                               system_instruction = chat.load_base_prompt(os.getenv('FERNET_TOKEN'))))
-    current_app.chat_client = chat_client
-    current_app.conversation_logger.reset()
-    return(jsonify({'status' : 200}), 200)
+    try:
+        chat_client = genai.Client(api_key = os.getenv('GEMINI_TOKEN'))
+        chat_client = chat_client.chats.create(model = 'gemini-2.5-flash',
+                                            config = types.GenerateContentConfig(
+                                                system_instruction = chat.load_base_prompt(os.getenv('FERNET_TOKEN'))))
+        current_app.chat_client = chat_client
+        current_app.conversation_logger.reset()
+        return(jsonify({'status' : 200}), 200)
+    except Exception as e:
+        print(f'An error happened: "{e}"')
+        return(jsonify({'status' : str(e)}), 500)

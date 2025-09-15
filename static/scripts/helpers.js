@@ -13,6 +13,8 @@ function reset_chat() {
             }
         })
         .catch(error => console.error(`Error: ${error}`))
+
+        setTimeout(() => {send_welcome_message()});
     }
 }
 
