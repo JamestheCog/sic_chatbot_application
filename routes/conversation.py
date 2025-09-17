@@ -2,7 +2,7 @@
 A module to contain helper functions related to the Chatbot's functionality.
 '''
 
-import dotenv, os
+import dotenv, os, time, random
 from utils import chat, database
 from flask import Blueprint, current_app, request, jsonify
 
@@ -19,13 +19,21 @@ def send_message():
     '''
     Generate a response plus log the user's message.
     '''
-    data = request.json 
+    data, retry_times = request.json, 0 
     print(data)
     if not isinstance(data, dict):
         return(jsonify({'error_message' : 'Invalid data sent', 'error_code' : 500,
                         'user_message' : 'ERROR: SOMETHING HAPPENED'}), 500)
     database.store_message(data['content'], 'user', current_app.conversation_logger.id)
-    response = current_app.chat_client.send_message(data['content'])
+    while retry_times < int(os.getenv('RETRY_RESPONSES')):
+        response = current_app.chat_client.send_message(data['content'])
+        if isinstance(response, dict):
+            if response.get('error') is None:
+                retry_times += 1
+                print(f'Trying to re-fetch responses now (attempt {retry_times + 1})...')
+                time.sleep(random.randint(4, 8))
+        else:
+            break
     database.store_message(response.text, 'assistant', current_app.conversation_logger.id)
     return(jsonify({'content' : response.text}), 200)
 
