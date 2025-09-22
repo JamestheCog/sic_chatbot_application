@@ -14,20 +14,17 @@ from google.genai import types
 
 dotenv.load_dotenv()
 conversation = Blueprint('conversation', __name__, template_folder = 'templates')
-items = {}
+session_constant = {}
 
 # ===
 def initialize_items():
-    if 'session_id' not in session:
-        items['session_id'] = str(uuid.uuid4())
-    if 'chat_assistant' not in session:
+    if 'session_id' not in session_constant:
+        session_constant['session_id'] = logger.Logger()
+    if 'chat_assistant' not in session_constant:
         chat_client = genai.Client(api_key = os.getenv('GEMINI_TOKEN'))
-        items['chat_assistant'] = chat_client.chats.create(model = 'gemini-2.5-flash', 
-                                                             config = types.GenerateContentConfig(system_instruction = current_app.bot_prompt))
-    session_id = session.get('session_id')
-    if session_id not in items:
-        items[session_id] = logger.Logger()
-    return(items[session_id], items['chat_assistant'])
+        session_constant['chat_assistant'] = chat_client.chats.create(model = 'gemini-2.5-flash', 
+                                                                      config = types.GenerateContentConfig(system_instruction = current_app.bot_prompt))
+    return(session_constant['session_id'], session_constant['chat_assistant'])
 # ===
 
 # Define the routes here...
@@ -35,15 +32,15 @@ def initialize_items():
 def send_message():
     '''
     Generate a response plus log the user's message.
-    '''
+    '''        
     data, retry_times = request.json, 0
-    user_logger, chat_client = initialize_items()
+    user_logger, chat_assistant = initialize_items()
     if not isinstance(data, dict):
         return(jsonify({'error_message' : 'Invalid data sent', 'error_code' : 500,
                         'user_message' : 'ERROR: SOMETHING HAPPENED'}), 500)
     database.store_message(data['content'], 'user', user_logger.id)
     while retry_times < int(os.getenv('RETRY_RESPONSES')):
-        response = chat_client.send_message(data['content'])
+        response = chat_assistant.send_message(data['content'])
         if isinstance(response, dict):
             if response.get('error') is None:
                 retry_times += 1
