@@ -13,7 +13,7 @@ class Logger():
         self.id = self._generate_id()
     
     def log_message(self, message: str, role: str):
-        self.message_history.append({'role' : role, 'content' : message})
+        self.message_history.append({'role' : role, 'parts' : [message]})
     
     def reset(self):
         self.message_history = []

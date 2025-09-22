@@ -1,6 +1,5 @@
-import dotenv, os
+import dotenv, os, uuid
 from flask import Flask, render_template
-from utils import logger
 from routes import conversation, misc
 from google import genai
 from google.genai import types
@@ -15,8 +14,8 @@ chat_client = chat_client.chats.create(model = 'gemini-2.5-flash',
 # Set the application-specific constants:
 app = Flask(__name__)
 app.bot_prompt = bot_prompt
-app.conversation_logger = logger.Logger()
 app.chat_client = chat_client
+app.secret_key = str(uuid.uuid4())
 
 # Register the routes here plus define a starter route:
 app.register_blueprint(conversation.conversation)
