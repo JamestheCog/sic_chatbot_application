@@ -14,17 +14,19 @@ from google.genai import types
 
 dotenv.load_dotenv()
 conversation = Blueprint('conversation', __name__, template_folder = 'templates')
-session_constant = {}
+session_items = {}
 
 # ===
 def initialize_items():
-    if 'session_id' not in session_constant:
-        session_constant['session_id'] = logger.Logger()
-    if 'chat_assistant' not in session_constant:
+    session_item = {}
+    session['session_id'] = str(uuid.uuid4())
+    if 'chat_assistant' not in session_item:
         chat_client = genai.Client(api_key = os.getenv('GEMINI_TOKEN'))
-        session_constant['chat_assistant'] = chat_client.chats.create(model = 'gemini-2.5-flash', 
-                                                                      config = types.GenerateContentConfig(system_instruction = current_app.bot_prompt))
-    return(session_constant['session_id'], session_constant['chat_assistant'])
+        session_item['chat_assistant'] = chat_client.chats.create(model = 'gemini-2.5-flash', 
+                                                                config = types.GenerateContentConfig(system_instruction = current_app.bot_prompt))
+    if 'session_logger' not in session_item:
+        session_item['session_logger'] = logger.Logger()
+    session_items[session['session_id']] = session_item
 # ===
 
 # Define the routes here...
@@ -33,8 +35,10 @@ def send_message():
     '''
     Generate a response plus log the user's message.
     '''        
+    if 'session_id' not in session:
+        initialize_items()
     data, retry_times = request.json, 0
-    user_logger, chat_assistant = initialize_items()
+    user_logger, chat_assistant = [session_items[session['session_id']][i] for i in ['session_logger', 'chat_assistant']]
     if not isinstance(data, dict):
         return(jsonify({'error_message' : 'Invalid data sent', 'error_code' : 500,
                         'user_message' : 'ERROR: SOMETHING HAPPENED'}), 500)

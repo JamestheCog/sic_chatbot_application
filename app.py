@@ -1,8 +1,6 @@
 import dotenv, os, uuid
 from flask import Flask, render_template
 from routes import conversation, misc
-from google import genai
-from google.genai import types
 from utils import chat
 
 dotenv.load_dotenv()
